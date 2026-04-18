@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,4 +18,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // GL Journal routes will go here
+    Route::apiResource('accounts', AccountController::class);
+
+    // TODO: figure out DELETE, wether to hide all attached records or otherwise.
+
 });
