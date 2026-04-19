@@ -5,22 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Http\Requests\Account\StoreAccountRequest;
 use App\Http\Requests\Account\UpdateAccountRequest;
+use App\Http\Resources\AccountResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AccountController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(): JsonResource
     {
         $accounts = Account::orderBy('code')->get();
-
-        return response()->json($accounts);
+        return  AccountResource::collection($accounts);
     }
 
-    public function store(StoreAccountRequest $request): JsonResponse
+    public function store(StoreAccountRequest $request): AccountResource
     {
         $account = Account::create($request->validated());
 
-        return response()->json($account, 201);
+        return new AccountResource($account->refresh());
     }
 
     public function show(Account $account): JsonResponse

@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             # Add users.
             UserSeeder::class,
-            AccountSeeder::class
+            AccountSeeder::class,
+            JournalEntrySeeder::class,
         ]);
     }
 }

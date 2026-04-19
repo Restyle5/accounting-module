@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Account extends Model
 {
+    use SoftDeletes, HasFactory;
+    
     protected $fillable = [
         'code',
         'name',
@@ -17,10 +21,10 @@ class Account extends Model
         'is_active' => 'boolean',
     ];
 
-    // public function journalLines()
-    // {
-    //     return $this->hasMany(JournalLine::class);
-    // }
+    public function journalLines()
+    {
+        return $this->hasMany(JournalLine::class);
+    }
 
     // Scope for active accounts only
     public function scopeActive($query)

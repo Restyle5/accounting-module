@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\AccountType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
-
+        Schema::create('journal_lines', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 20)->unique();
-            $table->string('name', 255);
-            $table->enum('type', array_column(AccountType::cases(), 'value'));
-            $table->boolean('is_active')->default(true)->index();
-            $table->softDeletes();
+            $table->foreignId('journal_entry_id')->constrained('journal_entries')->restrictOnDelete();
+            $table->foreignId('account_id')->constrained('accounts')->restrictOnDelete();
+            $table->enum('type', ['debit', 'credit'])->index();
+            $table->decimal('amount', 15, 2);
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('journal_lines');
     }
 };

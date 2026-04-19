@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\TrialBalanceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +21,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // GL Journal routes will go here
     Route::apiResource('accounts', AccountController::class);
+    // Accounting uses store/create to update changes rather than deleting or updating records.
+    Route::apiResource('journal-entries', JournalEntryController::class)->except(["destroy", "update"]);
 
-    // TODO: figure out DELETE, wether to hide all attached records or otherwise.
+        // Reports
+    Route::prefix('reports')->group(function () {
+        Route::get('/trial-balance', [TrialBalanceController::class, 'index']);
+    });
 
 });
