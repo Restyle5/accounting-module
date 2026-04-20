@@ -25,7 +25,7 @@ class JournalEntry extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         // append on create request
         static::creating(function ($model) {
             if (empty($model->user_id) && Auth::check()) {

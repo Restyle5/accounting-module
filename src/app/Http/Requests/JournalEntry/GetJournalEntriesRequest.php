@@ -23,7 +23,7 @@ class GetJournalEntriesRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-        public function rules(): array
+    public function rules(): array
     {
         return [
             'date_from'   => ['sometimes', 'date'],

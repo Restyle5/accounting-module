@@ -40,7 +40,7 @@ class TrialBalanceService
         });
 
         $totals = [
-            'total_debit'  => (float) round($result->sum('total_debit'), 2),    
+            'total_debit'  => (float) round($result->sum('total_debit'), 2),
             'total_credit' => (float) round($result->sum('total_credit'), 2),
         ];
 

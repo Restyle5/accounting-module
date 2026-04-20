@@ -33,7 +33,7 @@ class UpdateJournalEntryRequest extends FormRequest
             'reference'         => ['required', 'string', 'max:100', Rule::unique('journal_entries', 'reference')->ignore($entryId)],
             'description'       => ['required', 'string', 'max:500'],
             'lines'             => ['required', 'array', 'min:2'],
-            'lines.*.account_id'=> ['required', 'integer', 'exists:accounts,id'],
+            'lines.*.account_id' => ['required', 'integer', 'exists:accounts,id'],
             'lines.*.type'      => ['required', new Enum(JournalLineType::class)],
             'lines.*.amount'    => ['required', 'numeric', 'min:0.01'],
         ];

@@ -23,14 +23,14 @@ class StoreJournalEntryRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-        public function rules(): array
+    public function rules(): array
     {
         return [
             'date'              => ['required', 'date'],
             'reference'         => ['required', 'string', 'max:100', 'unique:journal_entries,reference'],
             'description'       => ['required', 'string', 'max:500'],
             'lines'             => ['required', 'array', 'min:2'],
-            'lines.*.account_id'=> ['required', 'integer', 'exists:accounts,id'],
+            'lines.*.account_id' => ['required', 'integer', 'exists:accounts,id'],
             'lines.*.type'      => ['required', new Enum(JournalLineType::class)],
             'lines.*.amount'    => ['required', 'numeric', 'min:0.01'],
         ];

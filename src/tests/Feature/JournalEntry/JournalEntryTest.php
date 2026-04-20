@@ -48,7 +48,7 @@ it('can filter journal entries by date range', function () {
     $response = $this->getJson('/api/journal-entries?date_from=2024-01-01&date_to=2024-03-31');
 
     $response->assertStatus(200)
-             ->assertJsonFragment(['date' => '2024-01-15']);
+        ->assertJsonFragment(['date' => '2024-01-15']);
 });
 
 it('can search journal entries by reference', function () {
@@ -60,7 +60,7 @@ it('can search journal entries by reference', function () {
     $response = $this->getJson('/api/journal-entries?reference=FIND-ME');
 
     $response->assertStatus(200)
-             ->assertJsonFragment(['reference' => 'JV-FIND-ME']);
+        ->assertJsonFragment(['reference' => 'JV-FIND-ME']);
 });
 
 it('can search journal entries by description', function () {
@@ -72,14 +72,14 @@ it('can search journal entries by description', function () {
     $response = $this->getJson('/api/journal-entries?description=rent');
 
     $response->assertStatus(200)
-             ->assertJsonFragment(['description' => 'Monthly rent payment']);
+        ->assertJsonFragment(['description' => 'Monthly rent payment']);
 });
 
 it('returns 422 when date_to is before date_from', function () {
     $response = $this->getJson('/api/journal-entries?date_from=2024-12-31&date_to=2024-01-01');
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['date_to']);
+        ->assertJsonValidationErrors(['date_to']);
 });
 
 // Store
@@ -87,7 +87,7 @@ it('can create a balanced journal entry', function () {
     $response = $this->postJson('/api/journal-entries', journalPayload($this->cash->id, $this->revenue->id));
 
     $response->assertStatus(201)
-             ->assertJsonFragment(['reference' => 'JV-TEST-001']);
+        ->assertJsonFragment(['reference' => 'JV-TEST-001']);
 
     $this->assertDatabaseHas('journal_entries', ['reference' => 'JV-TEST-001']);
     $this->assertDatabaseCount('journal_lines', 2);
@@ -105,7 +105,7 @@ it('cannot create entry when debits do not equal credits', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJson(['message' => 'Total debits must equal total credits.']);
+        ->assertJson(['message' => 'Total debits must equal total credits.']);
 });
 
 it('cannot create entry with less than 2 lines', function () {
@@ -119,7 +119,7 @@ it('cannot create entry with less than 2 lines', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['lines']);
+        ->assertJsonValidationErrors(['lines']);
 });
 
 it('cannot create entry with invalid account', function () {
@@ -134,7 +134,7 @@ it('cannot create entry with invalid account', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['lines.0.account_id']);
+        ->assertJsonValidationErrors(['lines.0.account_id']);
 });
 
 it('cannot create entry with duplicate reference', function () {
@@ -149,7 +149,7 @@ it('cannot create entry with duplicate reference', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['reference']);
+        ->assertJsonValidationErrors(['reference']);
 });
 
 it('cannot create entry with invalid line type', function () {
@@ -164,14 +164,14 @@ it('cannot create entry with invalid line type', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['lines.0.type']);
+        ->assertJsonValidationErrors(['lines.0.type']);
 });
 
 it('cannot create entry without required fields', function () {
     $response = $this->postJson('/api/journal-entries', []);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['date', 'reference', 'description', 'lines']);
+        ->assertJsonValidationErrors(['date', 'reference', 'description', 'lines']);
 });
 
 it('cannot create entry with zero amount', function () {
@@ -186,7 +186,7 @@ it('cannot create entry with zero amount', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['lines.0.amount', 'lines.1.amount']);
+        ->assertJsonValidationErrors(['lines.0.amount', 'lines.1.amount']);
 });
 
 // Show
@@ -197,7 +197,7 @@ it('can show a journal entry with lines', function () {
     $response = $this->getJson("/api/journal-entries/{$entry->id}");
 
     $response->assertStatus(200)
-             ->assertJsonStructure(['id', 'date', 'reference', 'description', 'lines']);
+        ->assertJsonStructure(['id', 'date', 'reference', 'description', 'lines']);
 });
 
 it('returns 404 for non existent journal entry', function () {

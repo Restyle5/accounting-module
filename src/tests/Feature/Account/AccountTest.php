@@ -17,7 +17,7 @@ it('can list all accounts', function () {
     $response = $this->getJson('/api/accounts');
 
     $response->assertStatus(200)
-             ->assertJsonCount(5, 'data');
+        ->assertJsonCount(5, 'data');
 });
 
 
@@ -25,7 +25,7 @@ it('returns empty array when no accounts exist', function () {
     $response = $this->getJson('/api/accounts');
 
     $response->assertStatus(200)
-             ->assertJsonCount(0, 'data');
+        ->assertJsonCount(0, 'data');
 });
 
 // Store
@@ -37,7 +37,7 @@ it('can create an account', function () {
     ]);
 
     $response->assertStatus(201)
-             ->assertJsonFragment(['code' => '9000', 'name' => 'Test Account']);
+        ->assertJsonFragment(['code' => '9000', 'name' => 'Test Account']);
 
     $this->assertDatabaseHas('accounts', ['code' => '9000']);
 });
@@ -52,7 +52,7 @@ it('cannot create account with duplicate code', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['code']);
+        ->assertJsonValidationErrors(['code']);
 });
 
 it('cannot create account with invalid type', function () {
@@ -63,14 +63,14 @@ it('cannot create account with invalid type', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['type']);
+        ->assertJsonValidationErrors(['type']);
 });
 
 it('cannot create account without required fields', function () {
     $response = $this->postJson('/api/accounts', []);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['code', 'name', 'type']);
+        ->assertJsonValidationErrors(['code', 'name', 'type']);
 });
 
 it('creates account with is_active true by default', function () {
@@ -81,8 +81,7 @@ it('creates account with is_active true by default', function () {
     ]);
 
     $response->assertStatus(201)
-             ->assertJsonFragment(['is_active' => true]);
-  
+        ->assertJsonFragment(['is_active' => true]);
 });
 
 // Show
@@ -92,7 +91,7 @@ it('can show a single account', function () {
     $response = $this->getJson("/api/accounts/{$account->id}");
 
     $response->assertStatus(200)
-             ->assertJsonFragment(['id' => $account->id]);
+        ->assertJsonFragment(['id' => $account->id]);
 });
 
 it('returns 404 for non existent account', function () {
@@ -112,7 +111,7 @@ it('can update an account', function () {
     ]);
 
     $response->assertStatus(200)
-             ->assertJsonFragment(['name' => 'Updated Name']);
+        ->assertJsonFragment(['name' => 'Updated Name']);
 });
 
 it('can update account with same code', function () {
@@ -138,7 +137,7 @@ it('cannot update account code to an existing code', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['code']);
+        ->assertJsonValidationErrors(['code']);
 });
 
 it('returns 404 when updating non existent account', function () {
@@ -158,7 +157,7 @@ it('can delete (soft) an account with no journal lines', function () {
     $response = $this->deleteJson("/api/accounts/{$account->id}");
 
     $response->assertStatus(200)
-             ->assertJson(['message' => 'Account deleted successfully.']);
+        ->assertJson(['message' => 'Account deleted successfully.']);
 
     $this->assertSoftDeleted('accounts', ['id' => $account->id]);
 });
@@ -176,7 +175,7 @@ it('cannot delete (soft) account that has journal lines', function () {
     $response = $this->deleteJson("/api/accounts/{$account->id}");
 
     $response->assertStatus(422)
-             ->assertJson(['message' => 'Cannot delete account with existing journal entries.']);
+        ->assertJson(['message' => 'Cannot delete account with existing journal entries.']);
 
     // Record should still exist and NOT be soft deleted
     $this->assertNotSoftDeleted('accounts', ['id' => $account->id]);

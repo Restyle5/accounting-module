@@ -13,10 +13,10 @@ it('returns trial balance with correct structure', function () {
     $response = $this->getJson('/api/reports/trial-balance');
 
     $response->assertStatus(200)
-             ->assertJsonStructure([
-                 'accounts',
-                 'totals' => ['total_debit', 'total_credit'],
-             ]);
+        ->assertJsonStructure([
+            'accounts',
+            'totals' => ['total_debit', 'total_credit'],
+        ]);
 });
 
 it('returns all accounts even with no journal lines', function () {
@@ -25,7 +25,7 @@ it('returns all accounts even with no journal lines', function () {
     $response = $this->getJson('/api/reports/trial-balance');
 
     $response->assertStatus(200)
-             ->assertJsonCount(5, 'accounts');
+        ->assertJsonCount(5, 'accounts');
 });
 
 it('total debits always equal total credits', function () {
@@ -82,18 +82,18 @@ it('calculates correct debit and credit totals per account', function () {
     $response = $this->getJson('/api/reports/trial-balance');
 
     $response->assertStatus(200)
-             ->assertJsonFragment([
-                 'code'         => '1000',
-                 'total_debit'  => 3000.0,
-                 'total_credit' => 0.0,
-                 'balance'      => 3000.0,
-             ])
-             ->assertJsonFragment([
-                 'code'         => '4000',
-                 'total_debit'  => 0.0,
-                 'total_credit' => 3000.0,
-                 'balance'      => -3000.0,
-             ]);
+        ->assertJsonFragment([
+            'code'         => '1000',
+            'total_debit'  => 3000.0,
+            'total_credit' => 0.0,
+            'balance'      => 3000.0,
+        ])
+        ->assertJsonFragment([
+            'code'         => '4000',
+            'total_debit'  => 0.0,
+            'total_credit' => 3000.0,
+            'balance'      => -3000.0,
+        ]);
 });
 
 it('filters trial balance by date range', function () {
@@ -166,9 +166,8 @@ it('returns 422 when date_to is before date_from', function () {
     $response = $this->getJson('/api/reports/trial-balance?date_from=2024-12-31&date_to=2024-01-01');
 
     $response->assertStatus(422)
-             ->assertJsonValidationErrors(['date_to']);
+        ->assertJsonValidationErrors(['date_to']);
 });
 
 
 // Auth is handled in beforeEach via actingAsUser, tested separately in AuthTest'
- 

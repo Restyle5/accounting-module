@@ -24,9 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Accounting uses store/create to update changes rather than deleting or updating records.
     Route::apiResource('journal-entries', JournalEntryController::class)->except(["destroy", "update"]);
 
-        // Reports
+    // Reports
     Route::prefix('reports')->group(function () {
         Route::get('/trial-balance', [TrialBalanceController::class, 'index']);
     });
-
 });
